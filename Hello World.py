@@ -4,6 +4,8 @@ from tkinter import *
 from tkinter.ttk import *
 from tkinter.colorchooser import askcolor
 
+# :)
+
 def resize(self):
     w = app_window.winfo_width()
     h = app_window.winfo_height()
