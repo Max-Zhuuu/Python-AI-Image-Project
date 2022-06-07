@@ -1,23 +1,45 @@
+"""
+import os
+import shutil
+from tkinter import *
+from tkinter import colorchooser
+from tkinter.filedialog import askopenfilename
+from PIL import ImageTk, Image, ImageDraw
+"""
+
 from concurrent.futures.process import _MAX_WINDOWS_WORKERS
 import tkinter as tk
 from tkinter import *
 from tkinter.ttk import *
 from tkinter.colorchooser import askcolor
 
-# :)
 
+def on_resize(self,event):
+    # determine the ratio of old width/height to new width/height
+    wscale = float(event.width)/self.width
+    hscale = float(event.height)/self.height
+    self.width = event.width
+    self.height = event.height
+    # resize the canvas 
+    self.config(width=self.width, height=self.height)
+    # rescale all the objects tagged with the "all" tag
+    self.scale("all",0,0,wscale,hscale)
+
+"""
 def resize(self):
-    w = app_window.winfo_width()
-    h = app_window.winfo_height()
-    app_window.geometry(f'{w}x{h}')
+    if ( app_window.geometry != '910x600'):
+        w = app_window.winfo_width
+        h = app_window.winfo_height
+        app_window.geometry(f'{w}x{h}')
+"""
 
 # base window
 app_window = Tk()
 app_window.title("Python Project")
-app_window.geometry('800x1000')
+app_window.geometry('910x600')
 app_window.resizable(1, 1)
-app_window.minsize(500, 600)
-app_window.bind('<Configure>', resize)
+app_window.minsize(910, 600)
+app_window.bind('<Configure>', on_resize)
 
 # generating canvas
 class Paint(object):
@@ -47,13 +69,14 @@ class Paint(object):
         self.choose_size_button.grid(row=5, column=0)
 
         # generating canvas
-        self.c = Canvas(self.root, bg='white', width=500, height=800)
-        self.c.grid(row=0, rowspan=6, column = 2, columnspan=10)
+        self.c = Canvas(self.root, bg='white', width=400, height=600)
+        self.c.grid(row=0, rowspan=6, column = 1)
 
         # generating right screen
-        screen_right = Canvas(self.root, bg="white", width=500, height=800)
-        screen_right.grid(row=0, rowspan=6, column=10, columnspan=10, sticky=W)
+        self.screen_right = Canvas(self.root, bg="white", width=400, height=600)
+        self.screen_right.grid(row=0, rowspan=6, column= 2, sticky=W)
 
+        self.addtag_all("all")
         self.setup()
         self.root.mainloop()
 
@@ -137,8 +160,3 @@ class Paint(object):
 
 if __name__ == '__main__':
     Paint()
-
-
-
-# execute app command
-app_window.mainloop()
